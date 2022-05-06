@@ -24,3 +24,9 @@ Public.register.validation.name=Please enter a display name we can use to addres
 Public.register.validation.password=Please enter a password
 Public.register.validation.passwordConfirmation=Please confirm your password
 Public.register.validation.existingAccount=This account is already registered. Forgot your password?
+
+##### Authentication #####
+Public.authentication.user_not_logged_in=Please, log in
+
+##### Authorization #####
+Public.authorization.user_is_not_a_teacher=You are not a teacher

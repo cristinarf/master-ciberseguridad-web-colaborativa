@@ -2,6 +2,7 @@ package controllers;
 
 import models.Constants;
 import models.User;
+import play.i18n.Messages;
 import play.mvc.*;
 
 import java.util.List;
@@ -43,6 +44,9 @@ public class Application extends Controller {
 
 
     public static void removeStudent(String student) {
+        ensureUserIsLoggedIn();
+        ensureUserIsATeacher();
+
         checkTeacher();
 
         User.remove(student);
@@ -51,14 +55,38 @@ public class Application extends Controller {
 
 
     public static void setMark(String student) {
+        ensureUserIsLoggedIn();
+        ensureUserIsATeacher();
+
         User u = User.loadUser(student);
         render(u);
     }
 
     public static void doSetMark(String student, Integer mark) {
+        ensureUserIsLoggedIn();
+        ensureUserIsATeacher();
+
         User u = User.loadUser(student);
         u.setMark(mark);
         u.save();
         index();
+    }
+
+    private static void ensureUserIsLoggedIn() {
+        if (session.contains("username")) {
+            return;
+        }
+
+        flash.put("error", Messages.get("Public.authentication.user_not_logged_in"));
+        Secure.login();
+    }
+
+    private static void ensureUserIsATeacher() {
+        if (session.contains("role") && session.get("role").equals(Constants.User.TEACHER)) {
+            return;
+        }
+
+        flash.put("error", Messages.get("Public.authorization.user_is_not_a_teacher"));
+        Application.index();
     }
 }

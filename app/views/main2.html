@@ -25,6 +25,11 @@
         </div>
 
         <div id="login">
+            #{if flash.error}
+            <p class="error">
+                &{flash.error}
+            </p>
+            #{/if}
             #{doLayout /}
         </div>
     </div>
